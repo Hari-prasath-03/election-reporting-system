@@ -9,16 +9,16 @@ export const createUserSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   display_name: z.string().min(1, "Display name is required"),
-  role: z.enum(["admin", "informer", "user"], {
-    message: "Role must be either admin or informer or user",
+  role: z.enum(["admin", "informer"], {
+    message: "Role must be either admin or informer",
   }),
 });
 
 export const updateUserSchema = z.object({
   id: z.uuid("Invalid user ID"),
   display_name: z.string().min(1, "Display name is required"),
-  role: z.enum(["admin", "informer", "user"], {
-    message: "Role must be either admin or informer or user",
+  role: z.enum(["admin", "informer"], {
+    message: "Role must be either admin or informer",
   }),
   email: z.email("Invalid email address").optional(),
   password: z

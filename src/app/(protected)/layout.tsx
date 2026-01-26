@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import "../globals.css";
 
 import { redirect } from "next/navigation";
-import { getUser } from "@/utils";
+import { getUser } from "@/services/self-user-service";
 
 const figtree = Figtree({
   variable: "--font-figtree",

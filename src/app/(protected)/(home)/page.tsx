@@ -1,4 +1,4 @@
-import { getUserClaims } from "@/utils";
+import { getUserClaims } from "@/services/self-user-service";
 import hasPermission from "@/permissions";
 import { redirect } from "next/navigation";
 
@@ -6,6 +6,7 @@ export default async function Home() {
   const user = await getUserClaims();
   if (!user) redirect("/login");
   if (hasPermission(user, "access:dashboard")) redirect("/dashboard");
+  if (hasPermission(user, "update:vote_counts")) redirect("/election-update");
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">

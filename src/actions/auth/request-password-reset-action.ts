@@ -1,11 +1,12 @@
 "use server";
 
 import createClient from "@/lib/supabase/server";
+import { ForgotPasswordState } from "@/types";
 import { forgotPasswordSchema } from "@/types/validation-schema";
 import { headers } from "next/headers";
 
 export default async function requestPasswordResetAction(
-  prevState: any,
+  prevState: ForgotPasswordState | null,
   formData: FormData,
 ) {
   const email = formData.get("email");
@@ -24,7 +25,7 @@ export default async function requestPasswordResetAction(
   const { error } = await supabase.auth.resetPasswordForEmail(
     validation.data.email,
     {
-      redirectTo: `${origin}/auth/callback?next=/reset-password`,
+      redirectTo: `${origin}/api/auth/callback?next=/reset-password`,
     },
   );
 

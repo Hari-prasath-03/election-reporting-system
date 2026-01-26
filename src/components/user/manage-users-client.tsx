@@ -7,7 +7,6 @@ import { UserPlus, Search } from "lucide-react";
 import { User } from "@/types";
 import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/form-select";
-import fetchUsersAction from "@/actions/user/fetch-users-action";
 
 type ManageUsersClientProps = {
   initialUsers: User[];
@@ -37,33 +36,39 @@ export default function ManageUsersClient({
     { value: "all", label: "All Roles" },
     { value: "admin", label: "Admin" },
     { value: "informer", label: "Informer" },
-    { value: "user", label: "User" },
   ];
 
   const fetchUsers = useCallback(
     async (pageNum: number, isNewFilter: boolean = false) => {
       setLoading(true);
-      const result = await fetchUsersAction({
-        page: pageNum,
-        limit: 20,
-        query: searchQuery,
-        role: selectedRole,
-      });
+      try {
+        const params = new URLSearchParams({
+          page: pageNum.toString(),
+          limit: "20",
+          query: searchQuery,
+          role: selectedRole,
+        });
 
-      if (result.success) {
-        if (isNewFilter) {
-          setUsers(result.data);
-          setPage(1);
-        } else {
-          setUsers((prev) => {
-            const newUsers = result.data.filter(
-              (newU) => !prev.some((p) => p.id === newU.id),
-            );
-            return [...prev, ...newUsers];
-          });
-          setPage(pageNum);
+        const response = await fetch(`/api/users?${params.toString()}`);
+        const result = await response.json();
+
+        if (result.success) {
+          if (isNewFilter) {
+            setUsers(result.data);
+            setPage(1);
+          } else {
+            setUsers((prev) => {
+              const newUsers = result.data.filter(
+                (newU: User) => !prev.some((p) => p.id === newU.id),
+              );
+              return [...prev, ...newUsers];
+            });
+            setPage(pageNum);
+          }
+          setTotal(result.total);
         }
-        setTotal(result.total);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
       }
       setLoading(false);
     },

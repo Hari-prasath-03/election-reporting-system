@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { PostgrestError } from "@supabase/supabase-js";
 export default class QueryBuilder<T = any> {
   private query: any;
-
   constructor(query: any) {
     this.query = query;
   }
@@ -19,7 +19,7 @@ export default class QueryBuilder<T = any> {
       | "lte"
       | "like"
       | "ilike"
-      | "in" = "eq"
+      | "in" = "eq",
   ) {
     if (condition) {
       switch (operator) {
@@ -58,7 +58,7 @@ export default class QueryBuilder<T = any> {
   async build(): Promise<{
     data: T[];
     count: number;
-    error: any;
+    error: PostgrestError | null;
     success: boolean;
   }> {
     const { data, error, count } = await this.query;

@@ -12,7 +12,7 @@ import {
   getConstituenciesCount,
   getPartiesCount,
   getUsersCount,
-} from "@/utils";
+} from "@/services/dashboard-init-service";
 
 export default async function Page() {
   const [userCnt, partyCnt, candidateCnt, constituencyCnt] = await Promise.all([

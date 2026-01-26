@@ -1,13 +1,13 @@
-import fetchCandidatesAction from "@/actions/candidate/fetch-candidates-action";
+import { getCandidates } from "@/services/candidate-service";
 import ManageCandidatesClient from "@/components/candidate/manage-candidates-client";
-import fetchPartiesAction from "@/actions/party/fetch-parties-action";
-import fetchConstituenciesAction from "@/actions/constituencies/fetch-constituencies-action";
+import { getParties } from "@/services/party-service";
+import { getConstituencies } from "@/services/constituency-service";
 
 export default async function ManageCandidatesPage() {
   const [candidatesRes, partiesRes, constituenciesRes] = await Promise.all([
-    fetchCandidatesAction({ page: 1, limit: 20 }),
-    fetchPartiesAction({ limit: 100 }),
-    fetchConstituenciesAction({ limit: 234 }),
+    getCandidates({ page: 1, limit: 20 }),
+    getParties({ limit: 100 }),
+    getConstituencies({ limit: 234 }),
   ]);
 
   const constituencies = constituenciesRes.data.map((c) => ({

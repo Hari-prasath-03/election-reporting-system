@@ -1,13 +1,13 @@
-import fetchCountingCentersAction from "@/actions/counting-center/fetch-counting-centers-action";
+import { getCountingCenters } from "@/services/counting-center-service";
 import ManageCountingCentersClient from "@/components/counting-center/manage-counting-centers-client";
-import fetchDistrictsAction from "@/actions/constituencies/fetch-districts-action";
+import { getDistricts } from "@/services/constituency-service";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function ManageCountingCentersPage() {
   const [{ data, success }, districts] = await Promise.all([
-    fetchCountingCentersAction(),
-    fetchDistrictsAction(),
+    getCountingCenters(),
+    getDistricts(),
   ]);
 
   return (

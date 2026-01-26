@@ -8,9 +8,8 @@ import { LoginState } from "@/types";
 
 export default async function loginAction(
   prevState: LoginState | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<LoginState> {
-
   const email = formData.get("email");
   const password = formData.get("password");
   const validationResult = loginSchema.safeParse({

@@ -1,5 +1,4 @@
-import fetchCountingCentersWithAssignmentsAction from "@/actions/counting-center/fetch-counting-centers-with-assignments-action";
-
+import { getCountingCentersWithAssignments } from "@/services/counting-center-service";
 import {
   Table,
   TableBody,
@@ -11,9 +10,25 @@ import {
 import { MapPin, User } from "lucide-react";
 import { Fragment } from "react";
 
+interface Assignment {
+  id: number;
+  profile: {
+    display_name: string;
+    email: string;
+  } | null;
+}
+
+interface CountingCenterWithAssignments {
+  id: number;
+  name: string;
+  location_address: string | null;
+  assignments: Assignment[];
+}
+
 export default async function ViewAssignmentsPage() {
-  const { data: countingCenters, success } =
-    await fetchCountingCentersWithAssignmentsAction();
+  const { data, success } = await getCountingCentersWithAssignments();
+
+  const countingCenters = data as unknown as CountingCenterWithAssignments[];
 
   if (!success || !countingCenters) {
     return (
@@ -55,7 +70,7 @@ export default async function ViewAssignmentsPage() {
               </TableCell>
             </TableRow>
           ) : (
-            countingCenters.map((center: any) => {
+            countingCenters.map((center) => {
               const assignments = center.assignments || [];
               const rowSpan = Math.max(assignments.length, 1);
 
@@ -104,7 +119,7 @@ export default async function ViewAssignmentsPage() {
                     )}
                   </TableRow>
 
-                  {assignments.slice(1).map((assignment: any) => (
+                  {assignments.slice(1).map((assignment) => (
                     <TableRow
                       key={assignment.id}
                       className="hover:bg-transparent"

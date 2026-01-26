@@ -22,23 +22,23 @@ import { cn } from "@/lib/utils";
 export interface Option {
   value: string;
   label: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
-interface MultiSelectComboboxProps {
-  options: Option[];
+interface MultiSelectComboboxProps<T extends Option> {
+  options: T[];
   selectedValues: string[];
   onChange: (values: string[]) => void;
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;
-  renderOption?: (option: Option, isSelected: boolean) => React.ReactNode;
-  renderBadge?: (option: Option) => React.ReactNode;
+  renderOption?: (option: T, isSelected: boolean) => React.ReactNode;
+  renderBadge?: (option: T) => React.ReactNode;
   className?: string;
   modal?: boolean;
 }
 
-export function MultiSelectCombobox({
+export function MultiSelectCombobox<T extends Option>({
   options,
   selectedValues,
   onChange,
@@ -49,7 +49,7 @@ export function MultiSelectCombobox({
   renderBadge,
   className,
   modal = false,
-}: MultiSelectComboboxProps) {
+}: MultiSelectComboboxProps<T>) {
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 

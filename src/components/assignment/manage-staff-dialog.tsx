@@ -11,13 +11,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash2, UserPlus, Check } from "lucide-react";
 import { toast } from "sonner";
-import fetchAvailableInformersAction, {
-  AvailableInformer,
-} from "@/actions/assignment/fetch-available-informers-action";
+import { AvailableInformer } from "@/services/assignment-service";
 import { MultiSelectCombobox } from "@/components/ui/multi-select-combobox";
-import fetchCenterAssignmentsAction, {
-  AssignmentData,
-} from "@/actions/assignment/fetch-center-assignments-action";
+import { AssignmentData } from "@/services/assignment-service";
 import bulkAssignInformersAction from "@/actions/assignment/bulk-assign-informers-action";
 import unassignInformerAction from "@/actions/assignment/unassign-informer-action";
 import { cn } from "@/lib/utils";
@@ -47,22 +43,35 @@ export default function ManageStaffDialog({
 
   const loadData = async () => {
     setLoading(true);
-    const assignmentRes = await fetchCenterAssignmentsAction(centerId);
-    if (assignmentRes.success) {
-      setAssignments(assignmentRes.data);
+    try {
+      const response = await fetch(`/api/assignments/center/${centerId}`);
+      const assignmentRes = await response.json();
+      if (assignmentRes.success) {
+        setAssignments(assignmentRes.data);
+      }
+    } catch (error) {
+      console.error("Failed to load assignments", error);
     }
     setLoading(false);
   };
 
   const loadAvailableData = async () => {
-    const res = await fetchAvailableInformersAction(centerId);
-    if (res.success) {
-      setAvailableInformers(res.data);
+    try {
+      const response = await fetch(
+        `/api/assignments/available-informers?centerId=${centerId}`,
+      );
+      const res = await response.json();
+      if (res.success) {
+        setAvailableInformers(res.data);
+      }
+    } catch (error) {
+      console.error("Failed to load available informers", error);
     }
   };
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadData();
       loadAvailableData();
       setActiveTab("list");
@@ -233,8 +242,8 @@ export default function ManageStaffDialog({
                         className="w-full"
                       />
                       <p className="text-[10px] text-muted-foreground">
-                        Only users with role 'informer' not currently assigned
-                        to <strong>this center</strong> are shown.
+                        Only users with role &apos;informer&apos; not currently
+                        assigned to <strong>this center</strong> are shown.
                       </p>
                     </div>
 

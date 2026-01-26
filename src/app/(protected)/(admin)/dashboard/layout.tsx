@@ -1,6 +1,6 @@
 import BackButton from "@/components/ui/back-button";
 import hasPermission from "@/permissions";
-import { getUserClaims } from "@/utils";
+import { getUserClaims } from "@/services/self-user-service";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({

@@ -2,7 +2,7 @@ export type User = {
   id: string;
   email: string;
   display_name: string;
-  role: "admin" | "informer" | "user";
+  role: "admin" | "informer";
 };
 
 export type ConstituencyData = {
@@ -60,16 +60,18 @@ export type Candidate = {
   name: string;
   party_id: number;
   constituency_id: number;
-  photo_url: string;
-  gender: string;
+  photo_url?: string;
+  gender?: string;
   total_votes_cache?: number;
   parties?: {
+    id?: number;
     name?: string;
     symbol_url?: string;
-    short_name: string;
+    short_name?: string;
     color_code?: string;
   };
   constituencies?: {
+    id?: number;
     name: string;
   };
 };
@@ -93,6 +95,7 @@ export type CountingCenter = {
   constituencies?: {
     id: number;
     name: string;
+    district_id?: { name: string } | { name: string }[];
   }[];
 };
 
@@ -119,5 +122,35 @@ export type ResetPasswordState = {
   errors?: {
     password?: string[];
     confirmPassword?: string[];
+  };
+};
+
+export type Assignment = {
+  id: number;
+  name: string;
+  constituency: {
+    id: number;
+    name: string;
+  }[];
+  location_address: string;
+};
+
+export type VoteRound = {
+  id: number;
+  candidate_id: number;
+  round_no: number;
+  votes_count: number;
+  updated_at: string;
+  updated_by?: string;
+  candidates?: {
+    name: string;
+    parties?: {
+      symbol_url: string;
+      short_name: string;
+      color_code?: string;
+    };
+    constituencies?: {
+      name: string;
+    };
   };
 };

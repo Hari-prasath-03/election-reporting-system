@@ -19,7 +19,7 @@ export default function UserAvatar({ user, size = "md" }: UserAvatarProps) {
     <div
       className={cn(
         sizeClasses[size],
-        "rounded-full bg-linear-to-br from-primary to-primary/60 flex items-center justify-center text-primary-foreground font-semibold shadow-md"
+        "rounded-full bg-linear-to-br from-primary to-primary/60 flex items-center justify-center text-primary-foreground font-semibold shadow-md",
       )}
     >
       {getInitial()}

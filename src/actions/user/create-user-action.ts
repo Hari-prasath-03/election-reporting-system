@@ -6,7 +6,7 @@ import { UserFormState } from "@/types";
 import { createUserSchema } from "@/types/validation-schema";
 import { revalidatePath } from "next/cache";
 import hasPermission from "@/permissions";
-import { getUserClaims } from "@/utils";
+import { getUserClaims } from "@/services/self-user-service";
 
 export default async function createUserAction(
   prevState: UserFormState,

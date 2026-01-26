@@ -1,10 +1,10 @@
 import ManageUsersClient from "@/components/user/manage-users-client";
-import { getUserClaims } from "@/utils";
-import fetchUsersAction from "@/actions/user/fetch-users-action";
+import { getUserClaims } from "@/services/self-user-service";
+import { getUsers } from "@/services/user-service";
 
 export default async function ManageUsersPage() {
   const [usersResult, currUser] = await Promise.all([
-    fetchUsersAction({ page: 1, limit: 20 }),
+    getUsers({ page: 1, limit: 20 }),
     getUserClaims(),
   ]);
 

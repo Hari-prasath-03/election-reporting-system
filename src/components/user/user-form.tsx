@@ -129,12 +129,11 @@ export default function UserForm({
 
           <div className="space-y-2 w-full">
             <Label htmlFor="role">Role</Label>
-            <Select name="role" defaultValue={user?.role || "user"}>
+            <Select name="role" defaultValue={user?.role || "informer"}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="user">User</SelectItem>
                 <SelectItem value="informer">Informer</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
               </SelectContent>
@@ -150,8 +149,8 @@ export default function UserForm({
                   ? "Creating..."
                   : "Updating..."
                 : mode === "create"
-                ? "Create User"
-                : "Update User"}
+                  ? "Create User"
+                  : "Update User"}
             </Button>
             <Button
               type="button"

@@ -54,7 +54,7 @@ export function CustomDropdown({
               disabled={item.disabled}
               className={cn(
                 item.variant === "destructive" &&
-                "text-red-600 focus:text-red-600"
+                  "text-red-600 focus:text-red-600",
               )}
             >
               {item.label}

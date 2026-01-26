@@ -1,11 +1,12 @@
 "use server";
 
 import createClient from "@/lib/supabase/server";
+import { ResetPasswordState } from "@/types";
 import { resetPasswordSchema } from "@/types/validation-schema";
 import { redirect } from "next/navigation";
 
 export default async function resetPasswordAction(
-  prevState: any,
+  prevState: ResetPasswordState | null,
   formData: FormData,
 ) {
   const password = formData.get("password");

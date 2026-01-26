@@ -1,8 +1,8 @@
 import ManagePartiesClient from "@/components/party/manage-parties-client";
-import fetchPartiesAction from "@/actions/party/fetch-parties-action";
+import { getParties } from "@/services/party-service";
 
 export default async function ManagePartiesPage() {
-  const { data, total } = await fetchPartiesAction({
+  const { data, total } = await getParties({
     page: 1,
     limit: 20,
     excludeIndependent: true,

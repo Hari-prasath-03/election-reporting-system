@@ -11,9 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import requestPasswordResetAction from "@/actions/auth/request-password-reset-action";
 import LoadingSpinner from "@/assets/icons/loading-spinner";
 import { ForgotPasswordState } from "@/types";
+import requestPasswordResetAction from "@/actions/auth/request-password-reset-action";
 
 export default function ForgotPasswordPage() {
   const [state, formAction, isPending] = useActionState<

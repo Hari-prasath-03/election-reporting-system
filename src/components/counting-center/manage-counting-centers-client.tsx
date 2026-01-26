@@ -42,8 +42,9 @@ export default function ManageCountingCentersClient({
     } else {
       const filtered = centers.filter((center) =>
         center.constituencies?.some(
-          (c: any) =>
-            c.district_id?.name === selectedDistrict ||
+          (c) =>
+            (c.district_id as { name: string } | undefined)?.name ===
+              selectedDistrict ||
             (Array.isArray(c.district_id) &&
               c.district_id[0]?.name === selectedDistrict),
         ),

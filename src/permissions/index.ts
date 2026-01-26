@@ -5,8 +5,7 @@ type Permission = (typeof ROLES)[Role][number];
 
 const ROLES = {
   admin: ["access:dashboard"],
-  informer: [],
-  user: [],
+  informer: ["update:vote_counts"],
 } as const;
 
 export default function hasPermission(

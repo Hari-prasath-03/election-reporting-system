@@ -1,28 +1,26 @@
-"use server";
-
 import createClient from "@/lib/supabase/server";
 import { User } from "@/types";
 import QueryBuilder from "@/lib/query-builder";
 
-interface FetchUsersParams {
+export interface GetUsersParams {
   page?: number;
   limit?: number;
   query?: string;
   role?: string;
 }
 
-interface FetchUsersResult {
+export interface GetUsersResult {
   success: boolean;
   data: User[];
   total: number;
 }
 
-export default async function fetchUsersAction({
+export async function getUsers({
   page = 1,
   limit = 20,
   query = "",
   role = "all",
-}: FetchUsersParams): Promise<FetchUsersResult> {
+}: GetUsersParams): Promise<GetUsersResult> {
   const sb = await createClient();
 
   const queryBuilder = new QueryBuilder<User>(
@@ -38,7 +36,7 @@ export default async function fetchUsersAction({
 
   return {
     success,
-    data,
-    total: count,
+    data: data || [],
+    total: count || 0,
   };
 }

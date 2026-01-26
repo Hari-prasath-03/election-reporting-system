@@ -1,4 +1,4 @@
-import { fetchCandidatesByConstituency } from "@/actions/candidate/fetch-candidates-by-constituency";
+import { getCandidatesByConstituency } from "@/services/candidate-service";
 import { CandidatesCardList } from "@/components/constituencies/candidates-card-list";
 
 interface PageProps {
@@ -11,7 +11,7 @@ export default async function ViewConstituencyPage(props: PageProps) {
   const params = await props.params;
   const decodedName = decodeURIComponent(params.constituencyName);
 
-  const result = await fetchCandidatesByConstituency(decodedName);
+  const result = await getCandidatesByConstituency(decodedName);
   if (!result.success) console.error(result.error);
   const candidates = result.data || [];
 

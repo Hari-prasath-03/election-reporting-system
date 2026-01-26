@@ -56,7 +56,7 @@ export default function ConstituenciesTable({
                     variant="outline"
                     className={cn(
                       "font-medium border-0",
-                      badgeColors.type[item.type || "General"]
+                      badgeColors.type[item.type || "General"],
                     )}
                   >
                     {item.type}
@@ -72,14 +72,14 @@ export default function ConstituenciesTable({
                         label: "View Details",
                         onClick: () =>
                           router.push(
-                            `/dashboard/view-constituencies/${item.constituency}`
+                            `/dashboard/view-constituencies/${item.constituency}`,
                           ),
                       },
                       {
                         label: "Add Candidate",
                         onClick: () =>
                           router.push(
-                            `/dashboard/manage-candidates?constituencyId=${item.id}`
+                            `/dashboard/manage-candidates?constituencyId=${item.id}`,
                           ),
                       },
                     ]}
@@ -102,7 +102,7 @@ export default function ConstituenciesTable({
         ref={observerTarget}
         className={cn(
           "w-full flex justify-center items-center",
-          loading && "h-4 py-4"
+          loading && "h-4 py-4",
         )}
       >
         {loading && constituencies.length > 0 && (

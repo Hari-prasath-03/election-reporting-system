@@ -1,21 +1,19 @@
-"use server";
-
 import createClient from "@/lib/supabase/server";
 import QueryBuilder from "@/lib/query-builder";
 
-export type FetchPartiesParams = {
+export type GetPartiesParams = {
   query?: string;
   page?: number;
   limit?: number;
   excludeIndependent?: boolean;
 };
 
-export default async function fetchPartiesAction({
+export async function getParties({
   query = "",
   page = 1,
   limit = 20,
   excludeIndependent = false,
-}: FetchPartiesParams) {
+}: GetPartiesParams) {
   const supabase = await createClient();
 
   const baseQuery = supabase.from("parties").select("*", { count: "exact" });

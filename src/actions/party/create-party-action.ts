@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { PartyFormState } from "@/types";
 import { processImageUpload } from "@/lib/image-handler";
 import hasPermission from "@/permissions";
-import { getUserClaims } from "@/utils";
+import { getUserClaims } from "@/services/self-user-service";
 
 export default async function createPartyAction(
   prevState: PartyFormState,

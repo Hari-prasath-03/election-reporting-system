@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search, Loader2 } from "lucide-react";
 import { Party } from "@/types";
 import { Input } from "@/components/ui/input";
-import fetchPartiesAction from "@/actions/party/fetch-parties-action";
 
 type ManagePartiesClientProps = {
   initialParties: Party[];
@@ -24,7 +23,7 @@ export default function ManagePartiesClient({
   const [showForm, setShowForm] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [selectedParty, setSelectedParty] = useState<Party | undefined>(
-    undefined
+    undefined,
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,25 +34,32 @@ export default function ManagePartiesClient({
     async (isNewSearch = false) => {
       setLoading(true);
       const currentPage = isNewSearch ? 1 : page;
-      const result = await fetchPartiesAction({
-        query: searchQuery,
-        page: currentPage,
-        limit,
-        excludeIndependent: true,
-      });
+      try {
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          limit: limit.toString(),
+          query: searchQuery,
+          excludeIndependent: "true",
+        });
 
-      if (result.success && result.data) {
-        if (isNewSearch) {
-          setParties(result.data);
-          setPage(1);
-        } else {
-          setParties(result.data);
+        const response = await fetch(`/api/parties?${params.toString()}`);
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          if (isNewSearch) {
+            setParties(result.data);
+            setPage(1);
+          } else {
+            setParties(result.data);
+          }
+          setTotal(result.total);
         }
-        setTotal(result.total);
+      } catch (error) {
+        console.error("Failed to fetch parties:", error);
       }
       setLoading(false);
     },
-    [searchQuery, page]
+    [searchQuery, page],
   );
 
   useEffect(() => {

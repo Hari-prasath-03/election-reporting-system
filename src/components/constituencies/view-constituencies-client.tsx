@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/form-select";
 import { Search } from "lucide-react";
 import ConstituenciesTable from "./constituencies-table";
-import fetchConstituenciesAction from "@/actions/constituencies/fetch-constituencies-action";
 
 export default function ViewConstituenciesClient({
   initialConstituencies,
@@ -18,7 +17,7 @@ export default function ViewConstituenciesClient({
   allDistricts: string[];
 }) {
   const [constituencies, setConstituencies] = useState<ConstituencyData[]>(
-    initialConstituencies
+    initialConstituencies,
   );
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -32,26 +31,36 @@ export default function ViewConstituenciesClient({
   const fetchConstituencies = useCallback(
     async (pageNum: number, isNewFilter: boolean = false) => {
       setLoading(true);
-      const result = await fetchConstituenciesAction({
-        page: pageNum,
-        limit: 20,
-        query: searchQuery,
-        district: selectedDistrict,
-      });
+      try {
+        const params = new URLSearchParams({
+          page: pageNum.toString(),
+          limit: "20",
+          query: searchQuery,
+          district: selectedDistrict,
+        });
 
-      if (result.success && result.data) {
-        if (isNewFilter) {
-          setConstituencies(result.data);
-          setPage(1);
-        } else {
-          setConstituencies((prev) => [...prev, ...result.data]);
-          setPage(pageNum);
+        const response = await fetch(
+          `/api/constituencies?${params.toString()}`,
+        );
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          if (isNewFilter) {
+            setConstituencies(result.data);
+            setPage(1);
+          } else {
+            setConstituencies((prev) => [...prev, ...result.data]);
+            setPage(pageNum);
+          }
+          setTotal(result.total);
         }
-        setTotal(result.total);
+      } catch (error) {
+        console.error("Failed to fetch constituencies:", error);
       }
+
       setLoading(false);
     },
-    [searchQuery, selectedDistrict]
+    [searchQuery, selectedDistrict],
   );
 
   useEffect(() => {
@@ -74,7 +83,7 @@ export default function ViewConstituenciesClient({
         )
           fetchConstituencies(page + 1);
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (observerTarget.current) observer.observe(observerTarget.current);
@@ -111,8 +120,8 @@ export default function ViewConstituenciesClient({
       </div>
 
       <ConstituenciesTable
-        constituencies={constituencies}
         loading={loading}
+        constituencies={constituencies}
         observerTarget={observerTarget as React.RefObject<HTMLDivElement>}
       />
     </div>

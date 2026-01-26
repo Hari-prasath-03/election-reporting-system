@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search, Loader2 } from "lucide-react";
 import { Candidate } from "@/types";
 import { Input } from "@/components/ui/input";
-import fetchCandidatesAction from "@/actions/candidate/fetch-candidates-action";
+
 import { useSearchParams, useRouter } from "next/navigation";
 
 type ManageCandidatesClientProps = {
@@ -52,24 +52,32 @@ export default function ManageCandidatesClient({
     async (isNewSearch = false) => {
       setLoading(true);
       const currentPage = isNewSearch ? 1 : page;
-      const result = await fetchCandidatesAction({
-        query: searchQuery,
-        page: currentPage,
-        limit,
-      });
 
-      if (result.success && result.data) {
-        if (isNewSearch) {
-          setCandidates(result.data);
-          setPage(1);
-        } else {
-          setCandidates(result.data);
+      try {
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          limit: limit.toString(),
+          query: searchQuery,
+        });
+
+        const response = await fetch(`/api/candidates?${params.toString()}`);
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          if (isNewSearch) {
+            setCandidates(result.data);
+            setPage(1);
+          } else {
+            setCandidates(result.data);
+          }
+          setTotal(result.total);
         }
-        setTotal(result.total);
+      } catch (error) {
+        console.error("Failed to fetch candidates:", error);
       }
       setLoading(false);
     },
-    [searchQuery, page]
+    [searchQuery, page],
   );
 
   useEffect(() => {

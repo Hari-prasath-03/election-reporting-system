@@ -17,7 +17,7 @@ export function CandidateCard({ candidate }: CandidateCardProps) {
           className={cn(
             "h-24 relative",
             !candidate.parties?.color_code &&
-              "bg-linear-to-r from-blue-500 to-purple-500"
+              "bg-linear-to-r from-blue-500 to-purple-500",
           )}
           style={
             candidate.parties?.color_code
