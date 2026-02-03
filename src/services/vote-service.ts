@@ -58,3 +58,33 @@ export async function getUserSubmissions(userId: string) {
     return { success: false, error: "An unexpected error occurred" };
   }
 }
+
+export async function getConstituencyRoundHistory(constituencyName: string) {
+  try {
+    const sb = await createClient();
+    const decodedName = decodeURIComponent(constituencyName);
+
+    const { data: candidates, error: candidateError } = await sb
+      .from("candidates")
+      .select("id, constituency_id, constituencies!inner(name)")
+      .eq("constituencies.name", decodedName);
+
+    if (candidateError) throw candidateError;
+    if (!candidates || candidates.length === 0)
+      return { success: true, data: [] };
+
+    const candidateIds = candidates.map((c) => c.id);
+
+    const { data: rounds, error: roundsError } = await sb
+      .from("vote_rounds")
+      .select("candidate_id, round_no")
+      .in("candidate_id", candidateIds);
+
+    if (roundsError) throw roundsError;
+
+    return { success: true, data: rounds || [] };
+  } catch (error) {
+    console.error("Error fetching constituency round history:", error);
+    return { success: false, error: "Failed to fetch round history" };
+  }
+}

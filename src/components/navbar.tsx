@@ -29,18 +29,29 @@ export default function Navbar({ user }: { user: User }) {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/">
-            <h1 className="text-xl font-bold truncate">TN Mandate Live</h1>
+            <h1 className="text-xl font-bold truncate">
+              Election reporting system
+            </h1>
           </Link>
         </div>
 
         <div className="hidden md:flex items-center gap-4">
           {hasPermission(user, "access:dashboard") && (
-            <Link
-              href="/dashboard"
-              className="hover:text-primary transition-all duration-200"
-            >
-              Dashboard
-            </Link>
+            <>
+              <Link
+                href="/dashboard"
+                className="hover:text-primary transition-all duration-200"
+              >
+                Dashboard
+              </Link>
+
+              <Link
+                href="/analytics"
+                className="hover:text-primary transition-all duration-200"
+              >
+                Analytics
+              </Link>
+            </>
           )}
           <UserAvatar user={user} size="md" />
           <Button

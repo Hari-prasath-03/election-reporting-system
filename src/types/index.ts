@@ -154,3 +154,16 @@ export type VoteRound = {
     };
   };
 };
+
+export type ConstituencyMargin = {
+  constituency_id: number;
+  constituency_name: string;
+  leader_candidate: string;
+  leader_party: string;
+  competing_party: string;
+  vote_margin: number;
+  leader_party_symbol?: string;
+  leader_party_color?: string;
+  competing_party_symbol?: string;
+  district?: string;
+};

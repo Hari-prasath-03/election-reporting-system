@@ -13,7 +13,7 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "TN Mandate Live | Management Dashboard",
+  title: "Election reporting system | Management Dashboard",
   description:
     "Real-time Election Management System for counting centers and round-wise vote tallying.",
 };

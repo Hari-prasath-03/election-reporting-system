@@ -1,4 +1,5 @@
-import CnadidateAvathar from "@/components/update-count/candidate-avatar";
+import CandidateAvatar from "@/components/update-count/candidate-avatar";
+import MassUpdateCTA from "@/components/update-count/mass-update-cta";
 import { getCandidatesByConstituency } from "@/services/candidate-service";
 
 export default async function ConstituencyPage({
@@ -25,18 +26,18 @@ export default async function ConstituencyPage({
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-7xl pb-32">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight mb-2">
-          {decodedName}
-        </h1>
-        <p className="text-muted-foreground">
-          Select a candidate to update their vote counts.
-        </p>
+      <div className="mb-8 space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{decodedName}</h1>
+          <p className="text-muted-foreground">Select a candidate to update</p>
+        </div>
+
+        <MassUpdateCTA constituencyName={constituencyName} />
       </div>
 
       <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 justify-center">
         {candidates?.map((candidate) => (
-          <CnadidateAvathar
+          <CandidateAvatar
             key={candidate.id}
             constituencyName={decodedName}
             candidate={candidate}

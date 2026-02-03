@@ -3,15 +3,15 @@ import { Candidate } from "@/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-interface CnadidateAvatharProps {
+interface CandidateAvatarProps {
   constituencyName: string;
   candidate: Candidate;
 }
 
-export default function CnadidateAvathar({
+export default function CandidateAvatar({
   constituencyName,
   candidate,
-}: CnadidateAvatharProps) {
+}: CandidateAvatarProps) {
   return (
     <Link
       key={candidate.id}

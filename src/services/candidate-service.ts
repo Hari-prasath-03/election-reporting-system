@@ -104,6 +104,9 @@ export async function getCandidatesByConstituency(constituencyName: string) {
       constituencies!inner (
         id,
         name
+      ),
+      vote_rounds (
+        votes_count
       )
     `,
       )
@@ -113,15 +116,29 @@ export async function getCandidatesByConstituency(constituencyName: string) {
       return { success: false, error: error.message };
     }
 
-    const candidates = data?.map((candidate) => ({
-      ...candidate,
-      parties: Array.isArray(candidate.parties)
-        ? candidate.parties[0]
-        : candidate.parties,
-      constituencies: Array.isArray(candidate.constituencies)
-        ? candidate.constituencies[0]
-        : candidate.constituencies,
-    }));
+    const candidates = data
+      ?.map((candidate) => {
+        const totalVotes = candidate.vote_rounds
+          ? candidate.vote_rounds.reduce(
+              (sum: number, round: { votes_count: number }) =>
+                sum + round.votes_count,
+              0,
+            )
+          : 0;
+
+        return {
+          ...candidate,
+          parties: Array.isArray(candidate.parties)
+            ? candidate.parties[0]
+            : candidate.parties,
+          constituencies: Array.isArray(candidate.constituencies)
+            ? candidate.constituencies[0]
+            : candidate.constituencies,
+          total_votes: totalVotes,
+        };
+      })
+      .sort((a, b) => b.total_votes - a.total_votes);
+
     return { success: true, data: candidates };
   } catch (error) {
     console.error(error);
