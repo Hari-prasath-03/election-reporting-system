@@ -1,7 +1,7 @@
 # TN Election Reporting System
 
 **A high-performance, enterprise-grade Election Reporting & Management System built for scale.**
-This application serves as a centralized hub for managing constituencies, parties, and candidates, while providing real-time election result aggregation through a secure Informer portal.
+This application serves as a centralized hub for managing constituencies, parties, and candidates, while providing real-time election result aggregation through a secure Informer portal and advanced analytics for stakeholders.
 
 ---
 
@@ -9,11 +9,13 @@ This application serves as a centralized hub for managing constituencies, partie
 
 This project represents a **hybrid Next.js 15+ architecture**, leveraging both **Server Actions** for type-safe mutations and **REST API routes** for external integrations and complex data fetching.
 
+![High Level Architecture](public/high-level-work-flow-diagram.png)
+
 ### By the Numbers
 
 - **Structure**: Modular "Feature-Sliced" Architecture
 - **Scale**: ~214+ Source Files
-- **Components**: 50+ Reusable UI Components
+- **Components**: 60+ Reusable UI Components
 - **Server Actions**: 22+ Remote Procedure Calls (RPCs)
 - **API Endpoints**: 14+ Dedicated REST Routes
 
@@ -37,6 +39,9 @@ src/
 │   ├── (auth)/                       #   - /login, /forgot-password
 │   ├── (protected)/                  #   🔒 Secured Routes (Middleware Guarded)
 │   │   ├── (admin)/                  #     - /dashboard (Admin Console)
+│   │   │   ├── analytics/            #       📈 New: Advanced Election Analytics
+│   │   │   ├── manage-users/         #       - User Role Management
+│   │   │   └── ...                   #
 │   │   ├── (informer)/               #     - /assigned (Informer Workspace)
 │   │   ├── api/                      #     🔌 REST API Layer
 │   │   │   ├── assignments/          #         - GET /available-informers
@@ -47,6 +52,10 @@ src/
 │   │   │   ├── parties/              #         - GET / (Master data)
 │   │   │   └── users/                #         - GET / (Staff list)
 ├── components/                       # 🧩 UI Component Library
+│   ├── analytics/                    #   📈 Analytics Visualization Components
+│   │   ├── constituency-map.tsx      #      - Interactive SVG Maps
+│   │   ├── state-seat-status.tsx     #      - Party-wise Seat Breakdown
+│   │   └── ...                       #
 │   ├── assignment/                   #   - Assignment dialogs & tables
 │   ├── auth/                         #   - Login forms, OTP inputs
 │   ├── candidate/                    #   - Candidate cards, master tables
@@ -105,10 +114,16 @@ Used for data hydration and third-party integrations.
 - **Middleware Protection**: Edge-level route guarding.
 - **Secure Auth**: Supabase-powered authentication flow.
 
+### 📈 Analytics & Insights (New)
+
+- **Constituency Lead Maps**: Interactive visual representation of leading parties across constituencies.
+- **Seat Status Tracker**: Real-time cards showing total seats won/leading by each party (State & District level).
+- **Margin Analysis**: Deep dive into victory margins to identify swing seats and safe havens.
+
 ### 🗳️ Live Election Reporting Module
 
 - **Real-time Aggregation**: Atomic vote updates pushed immediately to the dashboard.
-- **Informer Portal**: Mobile-optimization workspace for field agents to report round-wise counts.
+- **Informer Portal**: Mobile-optimized workspace for field agents to report round-wise counts.
 - **Data Integrity**: Server-side validation using Zod schemas for every vote entry.
 
 ### 📊 Advanced Dashboard
@@ -150,4 +165,4 @@ CLOUDINARY_API_SECRET=...
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-#### 🧑‍💻 Developed and managed by [Hari prasath](https://github.com/hari-prasath-03)
+### The developer behind the screen [Hari prasath](https://hariprasath.tech)
